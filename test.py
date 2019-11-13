@@ -29,7 +29,7 @@ def create_dataset(dialect_list, base_dir):
                      #print(sampling_rate)
                      # song_array = psf.sigproc.preemphasis(song_array)
                      ceps = mfcc(song_array)
-                     #print(ceps.shape)
+                     print(ceps.shape)
                      bad_indices = np.where(np.isnan(ceps))
                      b = np.where(np.isinf(ceps))
                      ceps[bad_indices] = 0
@@ -57,13 +57,14 @@ def create_dataset(dialect_list, base_dir):
      dataset.to_csv('dataset_new.csv')
 
 def plots():
-     fs, audio = scipy.io.wavfile.read("1.wav")
+     fs, audio = scipy.io.wavfile.read("2.wav")
+     print(fs)
      time = np.arange(0,len(audio)/fs,1/fs)
      audio = np.asarray(audio)
      plt.plot(time, audio)
      plt.xlabel("Time(s)")
      plt.ylabel("Amplitude(units)")
-     plt.title("Temporal Analysis")
+     plt.title("Dialect 1")
      plt.show()
      ceps = mfcc(audio)
      ceps = ceps[0]

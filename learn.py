@@ -16,6 +16,7 @@ import glob
 import numpy as np
 from sklearn.externals import joblib
 from random import shuffle
+import matplotlib.pyplot as plt
 
 DIALECT_DIR = "data"
 DIALECT_LIST = [ "IDR1","IDR2","IDR3","IDR4","IDR5","IDR6","IDR7","IDR8","IDR9"]
@@ -32,13 +33,13 @@ def read_data():
 	
 def loop(X, y, dialect_list):
   avg = []
-  for i in range(50):
+  for i in range(100):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.1, shuffle = True)
     avg.append(classify(X_train, y_train, X_test, y_test, dialect_list))
   SVM_acc = []
   KNN_acc = []
   LR_acc = []
-  for i in  range(50):
+  for i in  range(100):
     LR_acc.append(avg[i][0])
     KNN_acc.append(avg[i][1])
     SVM_acc.append(avg[1][2])
@@ -74,7 +75,7 @@ def classify(X_train, y_train, X_test, y_test, dialect_list):
 
 	# K-Nearest neighbour classifier
 
-	knn_classifier = KNeighborsClassifier(n_neighbors = 3)
+	knn_classifier = KNeighborsClassifier(n_neighbors = 5)
 	knn_classifier.fit(X_train, y_train)
 	knn_predictions = knn_classifier.predict(X_test)
 	knn_accuracy = accuracy_score(y_test, knn_predictions)
@@ -83,6 +84,15 @@ def classify(X_train, y_train, X_test, y_test, dialect_list):
 	#print("knn accuracy = " + str(knn_accuracy))
 	#print("knn_cm:")
 	#print(knn_cm)
+	#conf_matrix = confusion_matrix(X_test, out_pred)
+	#print(conf_matrix)
+	# fig = plt.figure()
+	# axs = fig.add_subplot(111)
+	# caxs = axs.matshow(knn_cm, interpolation='nearest', cmap=plt.cm.Blues)
+	# fig.colorbar(caxs)
+	# axs.set_xticklabels([""] + DIALECT_LIST)
+	# axs.set_yticklabels([""] + DIALECT_LIST)
+	# plt.show()
 
 	# SVM
 
@@ -92,6 +102,7 @@ def classify(X_train, y_train, X_test, y_test, dialect_list):
 	svm_accuracy = accuracy_score(y_test, svm_predictions)
 	acc.append(svm_accuracy)
 	svm_cm = confusion_matrix(y_test, svm_predictions)
+	
 	#print("svm accuracy = " + str(svm_accuracy))
 	#print("svm_cm:")
 	#print(svm_cm)
@@ -116,7 +127,7 @@ def main():
 
  X, y = read_data()
 
- #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.1, shuffle = True)
+ #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3, shuffle = True)
  #classify(X_train, y_train, X_test, y_test, dialect_list)
  loop(X, y,dialect_list)
 
