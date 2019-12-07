@@ -26,7 +26,7 @@ def read_data():
 
  X = []
  y = []
- data = pd.read_csv("dataset_new.csv")
+ data = pd.read_csv("mfcc_features.csv")
  X = data.iloc[:,1:-1]
  y = data.iloc[:,-1]
  return np.array(X), np.array(y)
